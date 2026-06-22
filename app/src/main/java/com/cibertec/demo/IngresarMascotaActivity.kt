@@ -17,6 +17,7 @@ class IngresarMascotaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_ingresar_mascota)
+        val mascotaDAO = com.cibertec.demo.database.MascotaDAO(this)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -92,9 +93,7 @@ class IngresarMascotaActivity : AppCompatActivity() {
             val rgEsterilizado = findViewById<android.widget.RadioGroup>(R.id.rgEsterilizado)
             val raza = etRazaMascota.text.toString()
 
-            val nuevoId =
-                (com.cibertec.demo.data.MascotaRepository.listaMascotas
-                    .maxOfOrNull { it.idMascota } ?: 0) + 1
+            val nuevoId = 0
 
             if (nombre.isEmpty() || especie.isEmpty() || fechaNacimiento.isEmpty()) {
                 android.widget.Toast.makeText(this, "Por favor, completa los campos obligatorios", android.widget.Toast.LENGTH_SHORT).show()
@@ -133,6 +132,8 @@ class IngresarMascotaActivity : AppCompatActivity() {
                 val esterilizado = (rgEsterilizado.checkedRadioButtonId == R.id.mrbSiEsterilizado)
 
                 val nuevaMascota = com.cibertec.demo.entity.Mascota(
+
+
                     idMascota = nuevoId,
                     nombre = nombre,
                     especie = especie,
@@ -145,10 +146,26 @@ class IngresarMascotaActivity : AppCompatActivity() {
                     nickDueño = userSesion.nickUsuario
                 )
 
-                com.cibertec.demo.data.MascotaRepository.listaMascotas.add(nuevaMascota)
+                val resultado = mascotaDAO.registrar(nuevaMascota)
 
-                android.widget.Toast.makeText(this, "Mascota ${nuevaMascota.nombre} registrada con éxito", android.widget.Toast.LENGTH_SHORT).show()
-                irAMenuPrincipal()
+                if (resultado > 0) {
+
+                    android.widget.Toast.makeText(
+                        this,
+                        "Mascota ${nuevaMascota.nombre} registrada con éxito",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+
+                    irAMenuPrincipal()
+
+                } else {
+
+                    android.widget.Toast.makeText(
+                        this,
+                        "Error al registrar mascota",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
             } else {
                 android.widget.Toast.makeText(this, "No hay sesión activa", android.widget.Toast.LENGTH_SHORT).show()
             }

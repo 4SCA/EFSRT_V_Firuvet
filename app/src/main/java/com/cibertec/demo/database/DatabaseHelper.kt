@@ -5,12 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
 class DatabaseHelper(context: Context) :
-    SQLiteOpenHelper(
-        context,
-        "firuvet.db",
-        null,
-        1
-    ) {
+    SQLiteOpenHelper(context, "firuvet.db", null, 2) {
 
     override fun onCreate(db: SQLiteDatabase) {
 
@@ -28,11 +23,16 @@ class DatabaseHelper(context: Context) :
         db.execSQL(
             """
             CREATE TABLE mascotas(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                idMascota INTEGER PRIMARY KEY AUTOINCREMENT,
                 nombre TEXT,
+                especie TEXT,
+                genero TEXT,
                 raza TEXT,
-                edad INTEGER,
-                sexo TEXT
+                fechaNacimiento TEXT,
+                esEsterilizado INTEGER,
+                apodos TEXT,
+                alergias TEXT,
+                nickDueño TEXT
             )
             """
         )
@@ -55,6 +55,10 @@ class DatabaseHelper(context: Context) :
         oldVersion: Int,
         newVersion: Int
     ) {
+        db.execSQL("DROP TABLE IF EXISTS usuarios")
+        db.execSQL("DROP TABLE IF EXISTS mascotas")
+        db.execSQL("DROP TABLE IF EXISTS citas")
 
+        onCreate(db)
     }
 }
