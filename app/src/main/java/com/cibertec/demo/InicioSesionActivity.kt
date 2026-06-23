@@ -53,26 +53,26 @@ class InicioSesionActivity : AppCompatActivity() {
             if (usuario.isEmpty() || clave.isEmpty()) {
                 Toast.makeText(this, "Completa todos los Campos", Toast.LENGTH_SHORT).show()
             } else {
-                val encontrado = com.cibertec.demo.data.UsuarioRepository.listaUsuarios.find {
-                    it.nickUsuario == usuario && it.claveUsuario == clave
-                }
+                val existe = dao.validarLogin(usuario, clave)
 
-                if (encontrado != null) {
-                    com.cibertec.demo.data.UsuarioRepository.usuarioSesion = encontrado
+                if (existe) {
 
                     Toast.makeText(
                         this,
-                        "Bienvenido ${encontrado.nombreCompleto}",
+                        "Bienvenido",
                         Toast.LENGTH_SHORT
                     ).show()
 
                     irAMenuPrincipal()
+
                 } else {
+
                     Toast.makeText(
                         this,
                         "Usuario o Clave Incorrectos",
                         Toast.LENGTH_SHORT
                     ).show()
+
                 }
             }
         }

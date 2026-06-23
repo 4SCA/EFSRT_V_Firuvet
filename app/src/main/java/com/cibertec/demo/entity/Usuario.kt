@@ -1,6 +1,7 @@
 package com.cibertec.demo.entity
 
 import java.io.Serializable
+import com.cibertec.demo.entity.Usuario
 
 data class Usuario(
     val id : Int,

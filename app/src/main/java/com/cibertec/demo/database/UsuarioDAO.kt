@@ -5,8 +5,7 @@ import android.content.Context
 
 class UsuarioDAO(context: Context) {
 
-    private val dbHelper =
-        DatabaseHelper(context)
+    private val dbHelper = DatabaseHelper(context)
 
     fun registrar(
         nick: String,
@@ -14,26 +13,13 @@ class UsuarioDAO(context: Context) {
         clave: String
     ): Long {
 
-        val db =
-            dbHelper.writableDatabase
+        val db = dbHelper.writableDatabase
 
-        val values =
-            ContentValues()
+        val values = ContentValues()
 
-        values.put(
-            "nickUsuario",
-            nick
-        )
-
-        values.put(
-            "correo",
-            correo
-        )
-
-        values.put(
-            "clave",
-            clave
-        )
+        values.put("nickUsuario", nick)
+        values.put("correo", correo)
+        values.put("clave", clave)
 
         return db.insert(
             "usuarios",
@@ -41,4 +27,26 @@ class UsuarioDAO(context: Context) {
             values
         )
     }
+
+    fun validarLogin(
+        nick: String,
+        clave: String
+    ): Boolean {
+
+        val db = dbHelper.readableDatabase
+
+        val cursor = db.rawQuery(
+            "SELECT * FROM usuarios WHERE nickUsuario = ? AND clave = ?",
+            arrayOf(nick, clave)
+        )
+
+        val existe = cursor.moveToFirst()
+
+        cursor.close()
+        db.close()
+
+        return existe
+    }
 }
+
+    
