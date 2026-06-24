@@ -39,14 +39,17 @@ class DatabaseHelper(context: Context) :
 
         db.execSQL(
             """
-            CREATE TABLE citas(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                fecha TEXT,
-                hora TEXT,
-                lugar TEXT,
-                estado TEXT
-            )
-            """
+    CREATE TABLE citas(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        idUsuario INTEGER,
+        mascota TEXT,
+        lugar TEXT,
+        fecha TEXT,
+        hora TEXT,
+        motivo TEXT,
+        comentario TEXT
+    )
+    """
         )
     }
 

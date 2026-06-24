@@ -1,5 +1,6 @@
 package com.cibertec.demo.database
 
+import com.cibertec.demo.database.UsuarioDAO
 import android.content.ContentValues
 import android.content.Context
 

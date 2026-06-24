@@ -32,14 +32,17 @@ class MascotaDAO(context: Context) {
         return resultado
     }
 
-    fun listar(): MutableList<Mascota> {
+    fun listar(nickUsuario: String): MutableList<Mascota> {
 
         val lista = mutableListOf<Mascota>()
 
         val db = dbHelper.readableDatabase
 
         val cursor: Cursor =
-            db.rawQuery("SELECT * FROM mascotas", null)
+            db.rawQuery(
+                "SELECT * FROM mascotas WHERE nickDueño = ?",
+                arrayOf(nickUsuario)
+            )
 
         if (cursor.moveToFirst()) {
             do {

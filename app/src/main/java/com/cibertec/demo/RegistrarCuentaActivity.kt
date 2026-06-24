@@ -22,6 +22,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.cibertec.demo.entity.Usuario
 import java.util.Calendar
+import com.cibertec.demo.database.UsuarioDAO
+
 
 class RegistrarCuentaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +44,8 @@ class RegistrarCuentaActivity : AppCompatActivity() {
         val chbTerminos = findViewById<CheckBox>(R.id.chbTerminos)
         val btnCrearCuenta = findViewById<Button>(R.id.btnCrearCuenta)
         val tvTengoCuenta = findViewById<TextView>(R.id.tvTengoCuenta)
+
+        val usuarioDAO = UsuarioDAO(this)
 
         etRegistroFecha.isFocusable = false
         etRegistroFecha.isClickable = true
@@ -117,7 +121,14 @@ class RegistrarCuentaActivity : AppCompatActivity() {
                 claveUsuario = clave,
                 aceptoTerminos = terminos
             )
+
             com.cibertec.demo.data.UsuarioRepository.listaUsuarios.add(nuevoUsuario)
+
+            usuarioDAO.registrar(
+                nick,
+                "",
+                clave
+            )
 
             Toast.makeText(this, "Usuario ${nuevoUsuario.nickUsuario} Registrado", Toast.LENGTH_LONG).show()
             irAIniciarSesion()
